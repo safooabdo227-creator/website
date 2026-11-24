@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B1F4B">
+<meta name="description" content="شركة المهارات الرقمية لتقنية المعلومات: منازل ذكية، أعمال كهربائية، تيار خفيف وتكييف في الرياض. جرّب مجلسك الذكي واحجز معاينة.">
 <title>DSH Majlis Prototype</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <script>
   try { var l = localStorage.getItem('dsh-lang'); if (l === 'en' || l === 'ar') { document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr'; } else { document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl'; } }
   catch (e) { document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl'; }
@@ -75,16 +76,38 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(217,105,79,.55)}100%{box-shadow:0 0 0 18px rgba(217,105,79,0)}}
 .ring span{position:absolute;top:54px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.8rem;background:rgba(8,24,59,.8);padding:2px 10px;border-radius:999px}
 
-/* simulator dock: the panel's screen pulled forward, so it is glass */
-.dock{position:absolute;left:max(18px,env(safe-area-inset-left,0px));top:calc(72px + env(safe-area-inset-top,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));width:var(--dock-w);overflow:auto;overscroll-behavior:contain;
-  background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.15);backdrop-filter:blur(18px) saturate(1.15);
-  border:1px solid var(--glass-line);border-radius:22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 24px 60px rgba(0,0,0,.35);
-  padding:18px 18px 16px;display:flex;flex-direction:column;gap:18px;opacity:0;transform:translateX(-12px);transition:opacity .5s ease,transform .5s ease;visibility:hidden}
-.dock.on{opacity:1;transform:none;visibility:visible}
-.dock.on.hid{opacity:0;visibility:hidden;transform:translateX(-16px)}
-.hidebtn{position:absolute;top:14px;inset-inline-end:14px;display:inline-flex;align-items:center;gap:4px;padding:5px 12px 5px 8px;font-size:.82rem;background:rgba(255,255,255,.06)}
-.dock h2{padding-inline-end:84px}
-.showctl{position:absolute;left:max(18px,env(safe-area-inset-left,0px));top:calc(72px + env(safe-area-inset-top,0px));display:inline-flex;align-items:center;gap:8px;padding:9px 16px;font-size:.92rem;background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-color:var(--glass-line)}
+/* simulator panel: its own column (desktop) or sheet (phone); the 3D view renders only in the space left over */
+.dock{position:absolute;left:0;top:0;bottom:0;width:calc(var(--dock-w) + env(safe-area-inset-left,0px));z-index:3;
+  background:linear-gradient(180deg,var(--night-2),var(--night));border-right:1px solid var(--hair);
+  transform:translateX(-100%);visibility:hidden;transition:transform .45s cubic-bezier(.2,.7,.2,1),visibility 0s .45s}
+.dock.on{transform:none;visibility:visible;transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+.dock.on.hid{transform:translateX(-100%)}
+.dock-in{height:100%;overflow:auto;overscroll-behavior:contain;padding:calc(72px + env(safe-area-inset-top,0px)) 20px calc(20px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:18px}
+.dock.hid .dock-in{visibility:hidden;transition:visibility 0s .45s}
+.dtab{position:absolute;top:50%;left:100%;transform:translateY(-50%);width:30px;height:72px;padding:0;border:1px solid var(--hair);border-left:0;border-radius:0 14px 14px 0;background:var(--night-2);color:var(--travertine);display:grid;place-items:center;cursor:pointer}
+.dtab:hover{background:#17336f}
+.dtab svg{transition:transform .3s}
+.dock.hid .dtab svg{transform:rotate(180deg)}
+.viewctl{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(var(--vb,0px) + 16px + env(safe-area-inset-bottom,0px));z-index:2;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.vbtns{display:flex;gap:6px;padding:5px;border-radius:999px;background:rgba(8,24,59,.55);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--glass-line)}
+.vbtns button{width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.08);color:var(--travertine);display:grid;place-items:center;cursor:pointer;padding:0}
+.vbtns button:hover{background:rgba(255,255,255,.16)}
+.lookhint{font-size:.82rem;background:rgba(8,24,59,.7);border:1px solid var(--hair);border-radius:999px;padding:5px 12px;color:var(--travertine)}
+.stage.look #gl{cursor:grab}
+.stage.look #gl:active{cursor:grabbing}
+#gl{touch-action:pan-y}
+/* loading */
+.loader{position:absolute;inset:0;z-index:6;background:radial-gradient(70% 60% at 50% 45%,#13306b 0%,var(--night) 70%);display:grid;place-content:center;justify-items:center;gap:14px;text-align:center;padding:24px;transition:opacity .5s}
+.loader.done{opacity:0;pointer-events:none}
+.loader svg{width:46px;height:46px;animation:breathe 2.4s ease-in-out infinite}
+@keyframes breathe{50%{opacity:.5}}
+.ld-t{font-family:var(--f-display);font-weight:300;font-size:1.25rem}
+.ld-bar{width:min(260px,70vw);height:3px;background:rgba(232,221,203,.16);border-radius:2px;overflow:hidden}
+.ld-bar i{display:block;height:100%;width:6%;background:var(--lamp);transition:width .35s ease}
+.ld-s{font-size:.9rem;color:var(--sand);max-width:30em}
+.assetpill{position:absolute;top:calc(72px + env(safe-area-inset-top,0px));left:calc(var(--vx,0px) + (100% - var(--vx,0px)) / 2);transform:translateX(-50%);z-index:2;font-size:.8rem;background:rgba(8,24,59,.72);border:1px solid var(--hair);border-radius:999px;padding:4px 12px;color:var(--sand);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){.loader svg{animation:none}}
+.reduced .loader svg{animation:none}
 .dock h2{font-size:1.35rem;font-weight:500}
 .dock h3{font-size:.86rem;font-weight:500;color:var(--sand);margin-bottom:10px;font-family:var(--f-body)}
 .dock .story{color:#DCD2C1;font-size:.95rem;margin-top:4px}
@@ -165,11 +188,22 @@ footer .wrap{padding-block:0;display:grid;gap:6px}
 
 /* mobile: dock becomes a bottom sheet styled like the phone app */
 @media (max-width:760px){
-  .dock{left:0;right:0;top:auto;bottom:0;width:auto;max-height:50svh;border-radius:22px 22px 0 0;transform:translateY(16px);padding:14px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));gap:14px}
-  .dock.on.hid{transform:translateY(24px)}
-  .hidebtn svg{transform:rotate(-90deg)}
-  .showctl{top:auto;bottom:calc(18px + env(safe-area-inset-bottom,0px))}
-  .dock::before{content:"";width:40px;height:4px;border-radius:2px;background:rgba(232,221,203,.35);align-self:center;flex:none}
+  .dock{right:0;top:auto;width:auto;height:46svh;border-right:0;border-top:1px solid var(--hair);border-radius:20px 20px 0 0;transform:translateY(100%)}
+  .dock.on.hid{transform:translateY(100%)}
+  .dock-in{padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));gap:14px}
+  .dtab{top:auto;bottom:100%;left:50%;transform:translateX(-50%);width:76px;height:28px;border:1px solid var(--hair);border-bottom:0;border-radius:14px 14px 0 0}
+  .dtab svg{transform:rotate(-90deg)}
+  .viewctl{bottom:calc(var(--vb,0px) + 46px + env(safe-area-inset-bottom,0px));right:max(10px,env(safe-area-inset-right,0px))}
+  .vbtns{gap:4px;padding:4px}
+  .vbtns button{width:44px;height:44px}
+  .dtab{width:88px;height:36px}
+  .readout{gap:6px;margin-top:10px}
+  .readout span{padding:6px 8px}
+  .readout b{font-size:1rem}
+  .dock .story{font-size:.9rem}
+  .dock .foot{position:sticky;bottom:calc(-16px - env(safe-area-inset-bottom,0px));margin:0 calc(-1 * max(16px,env(safe-area-inset-right,0px))) calc(-16px - env(safe-area-inset-bottom,0px));padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(11,31,75,0),var(--night) 28%);gap:6px}
+  .dock .foot .tiny{font-size:.7rem}
+  .dock.hid .dtab svg{transform:rotate(90deg)}
   .beat{bottom:calc(58px + env(safe-area-inset-bottom,0px))}
   .lb{font-size:.74rem}
   .mark span{display:none}
@@ -183,14 +217,14 @@ footer .wrap{padding-block:0;display:grid;gap:6px}
 /* no WebGL: the story as text */
 .nogl .track{height:auto}
 .nogl .stage{position:relative;height:auto;background:var(--night);padding:110px 0 40px}
-.nogl #gl,.nogl .vig,.nogl .shade,.nogl .prog,.nogl .labels,.nogl .dock{display:none}
+.nogl #gl,.nogl .vig,.nogl .shade,.nogl .prog,.nogl .labels,.nogl .dock,.nogl .loader,.nogl .viewctl,.nogl .assetpill{display:none}
 .nogl .beat{position:relative;inset:auto;opacity:1;transform:none;margin:0 auto 36px;width:min(640px,calc(100% - 40px))}
 .nogl .noglnote{display:block}
+.nogl .beats{position:relative;inset:auto}
 .noglnote{display:none;width:min(640px,calc(100% - 40px));margin:0 auto 24px;color:var(--sand);font-size:.9rem}
 </style>
 </head>
 <body>
-
 <header class="bar"><div class="in gut">
   <a class="mark" href="#top" aria-label="Digital Skills Hub">
     <svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="3" fill="none" stroke="#7FA6EC" stroke-width="2"/><path d="M8 7h12M8 7v7h12v7H8M14 7v14" fill="none" stroke="#E8DDCB" stroke-width="2"/></svg>
@@ -222,7 +256,7 @@ footer .wrap{padding-block:0;display:grid;gap:6px}
     <div class="prog" id="prog"><div class="rail"><div class="fill" id="fill"></div></div><button class="pill" id="skip" type="button" data-t="skip">انتقل إلى التجربة</button></div>
 
     <aside class="dock" id="dock" aria-labelledby="simTitle">
-      <button class="pill hidebtn" id="dockHide" type="button" aria-controls="dock" aria-expanded="true"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg><span data-t="hideCtl">إخفاء</span></button>
+      <div class="dock-in">
       <div>
         <h2 id="simTitle" data-t="simTitle">جهّز المجلس</h2>
         <p class="story" data-t="simStory"></p>
@@ -271,8 +305,41 @@ footer .wrap{padding-block:0;display:grid;gap:6px}
         <p class="tiny" data-t="demoNote"></p>
         <button class="link" id="replay" type="button" data-t="replay">شاهد المقدمة مرة أخرى</button>
       </div>
+      </div>
+      <button class="dtab" id="dockTab" type="button" aria-controls="dock" aria-expanded="true" aria-label="إخفاء"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
     </aside>
-    <button class="pill showctl" id="dockShow" type="button" aria-controls="dock" aria-expanded="false" hidden><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span data-t="showCtl">التحكم</span></button>
+    <div class="viewctl" id="viewCtl" hidden>
+      <p class="lookhint" id="lookHint" hidden data-t="lookHint">اسحب لتتجوّل بنظرك داخل المجلس</p>
+      <div class="vbtns" role="group">
+        <button type="button" data-v="left" data-ta="vLeft"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7l-5 5 5 5"/><path d="M4 12h11a5 5 0 0 1 5 5"/></svg></button>
+        <button type="button" data-v="right" data-ta="vRight"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7l5 5-5 5"/><path d="M20 12H9a5 5 0 0 0-5 5"/></svg></button>
+        <button type="button" data-v="out" data-ta="vOut"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg></button>
+        <button type="button" data-v="in" data-ta="vIn"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg></button>
+        <button type="button" data-v="reset" data-ta="vReset"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4h4"/></svg></button>
+      </div>
+    </div>
+    <p class="assetpill" id="assetPill" hidden></p>
+    <div class="loader" id="loader" role="status" aria-live="polite">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="3" fill="none" stroke="#7FA6EC" stroke-width="2"/><path d="M8 7h12M8 7v7h12v7H8M14 7v14" fill="none" stroke="#E8DDCB" stroke-width="2"/></svg>
+      <p class="ld-t" id="ldText">جارٍ تجهيز المجلس…</p>
+      <div class="ld-bar" aria-hidden="true"><i id="ldFill"></i></div>
+      <p class="ld-s" id="ldSlow" hidden></p>
+      <button class="pill" id="ldSkip" type="button" hidden></button>
+    </div>
+    <script>
+    (function () {
+      var ar = document.documentElement.lang !== 'en';
+      var L = ar ? { text: 'جارٍ تجهيز المجلس…', slow: 'الاتصال بطيء، وما زلنا نحمّل العرض ثلاثي الأبعاد.', fail: 'تعذّر تحميل العرض ثلاثي الأبعاد على هذا الجهاز.', skip: 'تابع بدون العرض ثلاثي الأبعاد' }
+                 : { text: 'Preparing the majlis…', slow: 'Your connection is slow. We are still loading the 3D view.', fail: 'The 3D view could not load on this device.', skip: 'Continue without 3D' };
+      function el(i) { return document.getElementById(i); }
+      el('ldText').textContent = L.text; el('ldSkip').textContent = L.skip;
+      function skip() { window.__dshSkip = true; document.documentElement.classList.add('nogl'); el('loader').classList.add('done'); }
+      el('ldSkip').addEventListener('click', skip);
+      setTimeout(function () { if (!window.__dshReady) { el('ldSlow').textContent = L.slow; el('ldSlow').hidden = false; } }, 6000);
+      setTimeout(function () { if (!window.__dshReady) el('ldSkip').hidden = false; }, 10000);
+      window.addEventListener('error', function (e) { if (!window.__dshReady && e.target && e.target.tagName === 'SCRIPT') { el('ldSlow').textContent = L.fail; el('ldSlow').hidden = false; el('ldSkip').hidden = false; } }, true);
+    })();
+    </script>
     <p class="sr" aria-live="polite" id="live"></p>
   </div>
 </div>
@@ -369,6 +436,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+if (window.__dshSkip) throw new Error('3D skipped by visitor');
 
 /* ---------------- copy ---------------- */
 const T = {
@@ -382,7 +450,7 @@ b6h:'جرّبها بنفسك',b6p:'الضيوف قادمون بعد المغرب
 pGlass:'زجاج اللمس',pDisplay:'الشاشة',pFrame:'الإطار بلمسة الجوز',pBox:'علبة التثبيت في الجدار',
 mPower:'وحدة التغذية',mSwitch:'وحدة التشغيل',mDim:'وحدة التعتيم',mServer:'خادم الجوال',
 oLights:'الإنارة',oCurtains:'الستائر',oAc:'المكيف',oPhone:'تطبيق الجوال',panelMarker:'اللوحة',
-simTitle:'جهّز المجلس',hideCtl:'إخفاء',showCtl:'التحكم',simStory:'الضيوف قادمون بعد المغرب. اضغط «ضيوف» وشاهد ما يحدث.',clock:'الوقت',outside:'الخارج',inside:'الداخل (محاكاة)',
+simTitle:'جهّز المجلس',hideCtl:'إخفاء لوحة التحكم',showCtl:'إظهار لوحة التحكم',lookHint:'اسحب لتتجوّل بنظرك داخل المجلس',lookHintTouch:'اسحب يمينًا ويسارًا للتجوّل، وقرّب بإصبعين',vLeft:'لفّ لليسار',vRight:'لفّ لليمين',vIn:'تقريب',vOut:'إبعاد',vReset:'إعادة المنظر',ldPill:'جارٍ تحميل تفاصيل الغرفة…',simStory:'الضيوف قادمون بعد المغرب. اضغط «ضيوف» وشاهد ما يحدث.',clock:'الوقت',outside:'الخارج',inside:'الداخل (محاكاة)',
 scenesH:'المشاهد',sGuests:'ضيوف',sDinner:'عشاء',sReading:'قراءة',sOff:'إطفاء الكل',
 timeH:'وقت اليوم',tAsr:'العصر 4:30',tMaghrib:'المغرب 6:22',tIsha:'العشاء 7:52',tNight:'9:00',
 devH:'ضمن نظامي',dLights:'التحكم بالإنارة',dCurtains:'محركات الستائر',dAc:'التحكم بالمكيف',dIntercom:'الإنتركم المرئي',
@@ -409,7 +477,7 @@ b6h:'Now try it yourself',b6p:'Guests arrive after Maghrib. Get the majlis ready
 pGlass:'Touch glass',pDisplay:'Display',pFrame:'Frame, walnut finish',pBox:'Box inside the wall',
 mPower:'Power supply',mSwitch:'Switching',mDim:'Dimming',mServer:'Phone server',
 oLights:'Lights',oCurtains:'Curtains',oAc:'AC',oPhone:'Phone app',panelMarker:'The panel',
-simTitle:'Get the majlis ready',hideCtl:'Hide',showCtl:'Controls',simStory:'Guests arrive after Maghrib. Tap “Guests” and watch the room.',clock:'Time',outside:'Outside',inside:'Inside (simulated)',
+simTitle:'Get the majlis ready',hideCtl:'Hide controls',showCtl:'Show controls',lookHint:'Drag to look around the majlis',lookHintTouch:'Swipe sideways to look around, pinch to zoom',vLeft:'Turn left',vRight:'Turn right',vIn:'Zoom in',vOut:'Zoom out',vReset:'Reset view',ldPill:'Loading room details…',simStory:'Guests arrive after Maghrib. Tap “Guests” and watch the room.',clock:'Time',outside:'Outside',inside:'Inside (simulated)',
 scenesH:'Scenes',sGuests:'Guests',sDinner:'Dinner',sReading:'Reading',sOff:'All off',
 timeH:'Time of day',tAsr:'Asr 4:30',tMaghrib:'Maghrib 6:22',tIsha:'Isha 7:52',tNight:'9:00',
 devH:'Include in my system',dLights:'Lighting control',dCurtains:'Curtain motors',dAc:'AC control',dIntercom:'Video intercom',
@@ -452,6 +520,8 @@ function applyLang() {
   const h = document.documentElement;
   h.lang = lang; h.dir = lang === 'ar' ? 'rtl' : 'ltr';
   $$('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
+  $$('[data-ta]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.ta)); el.title = t(el.dataset.ta); });
+  { const tb = document.getElementById('dockTab'); if (tb) tb.setAttribute('aria-label', t(document.getElementById('dock').classList.contains('hid') ? 'showCtl' : 'hideCtl')); }
   $$('[data-l]').forEach(el => { el.hidden = el.dataset.l !== lang; });
   const lb = $('#lang'); lb.textContent = lang === 'ar' ? 'English' : 'العربية'; lb.lang = lang === 'ar' ? 'en' : 'ar';
   $('#pause').textContent = still ? t('resume') : t('pause');
@@ -468,7 +538,7 @@ try {
 } catch (e) { renderer = null; }
 const labelEls = [];
 if (!renderer) {
-  document.documentElement.classList.add('nogl');
+  document.documentElement.classList.add('nogl'); window.__dshReady = true; document.getElementById('loader').classList.add('done');
   applyLangSafe();
   throw new Error('WebGL unavailable');
 }
@@ -476,7 +546,10 @@ function applyLangSafe() { try { applyLang(); } catch (e) {} }
 
 const isSmall = () => Math.min(innerWidth, innerHeight) < 600;
 const MOBILE = isSmall() || /Android|iPhone|iPad/i.test(navigator.userAgent);
-renderer.setPixelRatio(Math.min(devicePixelRatio || 1, MOBILE ? 1.4 : 1.75));
+const PERF = { qual: 1, ema: 16.7, slow: 0, fast: 0, t: 0 };
+function pixelRatio() { const base = Math.min(devicePixelRatio || 1, MOBILE ? 1.4 : 1.5); const budget = MOBILE ? 1.6e6 : 2.3e6; const area = Math.max(1, stage.clientWidth * stage.clientHeight);
+  return Math.max(.6, Math.min(base, Math.sqrt(budget / area)) * PERF.qual); }
+renderer.setPixelRatio(pixelRatio());
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.0;
@@ -484,6 +557,12 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 RectAreaLightUniformsLib.init();
 
+const LD = { start: performance.now(), done: false, all: false, first: false, a: 0, b: 0 };
+THREE.DefaultLoadingManager.onProgress = (url, a, b) => { LD.a = a; LD.b = b; const f = b ? a / b : 0; const fill = document.getElementById('ldFill'); if (fill) fill.style.width = Math.max(6, Math.round(f * 100)) + '%';
+  const pill = document.getElementById('assetPill'); if (LD.done && !LD.all && pill) { pill.hidden = false; pill.textContent = `${t('ldPill')} ${Math.round(f * 100)}%`; } };
+THREE.DefaultLoadingManager.onLoad = () => { LD.all = true; const pill = document.getElementById('assetPill'); if (pill) pill.hidden = true; };
+function finishLoader() { if (LD.done) return; LD.done = true; window.__dshReady = true; const l = document.getElementById('loader'); l.classList.add('done'); setTimeout(() => { l.hidden = true; }, 600);
+  if (!LD.all && LD.b) { const pill = document.getElementById('assetPill'); pill.hidden = false; pill.textContent = `${t('ldPill')} ${Math.round(LD.a / LD.b * 100)}%`; } }
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(38, 1, 0.02, 200);
 const pmrem = new THREE.PMREMGenerator(renderer);
@@ -1007,15 +1086,18 @@ $('#copy').addEventListener('click', e => { const txt = $('#phone').textContent;
   try { navigator.clipboard.writeText(txt).then(done, () => { getSelection().selectAllChildren($('#phone')); }); } catch (_) { getSelection().selectAllChildren($('#phone')); } });
 
 /* ---------------- resize ---------------- */
-let W = 1, H = 1;
-function resize() { W = stage.clientWidth; H = stage.clientHeight; renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); }
+let W = 1, H = 1; const DOCK = { w: 0, h: 0 };
+new ResizeObserver(() => { DOCK.w = dock.offsetWidth; DOCK.h = dock.offsetHeight; }).observe(dock);
+function resize() { W = stage.clientWidth; H = stage.clientHeight; renderer.setPixelRatio(pixelRatio()); renderer.setSize(W, H, false); DOCK.w = dock.offsetWidth; DOCK.h = dock.offsetHeight; camera.aspect = W / H; camera.updateProjectionMatrix(); }
 addEventListener('resize', resize); resize();
 
 /* ---------------- per-frame update ---------------- */
 const proj = new THREE.Vector3();
+const EL = { fill: $('#fill'), prog: $('#prog'), vig: $('#vig'), shade: $('#shade') };
+function setStyle(el, prop, v) { const k = '_' + prop; if (el[k] !== v) { el[k] = v; el.style[prop] = v; } }
 function place(L, op) { L.op = op; const el = L.el; if (op < .01) { if (el.style.opacity !== '0') el.style.opacity = '0'; return; }
   proj.copy(L.anchor()).project(camera); if (proj.z > 1) { el.style.opacity = '0'; return; }
-  const x = (proj.x * .5 + .5) * W, y = (-proj.y * .5 + .5) * H; el.style.transform = `translate(${x}px,${y}px) translate(-50%,-140%)`; el.style.opacity = op.toFixed(3); }
+  const x = VX + (proj.x * .5 + .5) * VW, y = VY + (-proj.y * .5 + .5) * VH; if (x < VX - 10 || x > VX + VW + 10 || y > VY + VH) { el.style.opacity = '0'; return; } el.style.transform = `translate(${x}px,${y}px) translate(-50%,-140%)`; el.style.opacity = op.toFixed(3); }
 function fadeMat(m, a) { m.opacity = a; m.depthWrite = a > .999; }
 
 let last = performance.now(), visible = true, tick = 0;
@@ -1024,28 +1106,42 @@ function update(dt) {
   clock += dt; tick++;
   // progress
   pT = pForce ?? readScroll();
-  if (reduced) { const b = beatOf(pT); const target = BEAT_SHOW[b]; if (b !== lastBeat && lastBeat !== -1) { canvas.classList.add('blink'); setTimeout(() => canvas.classList.remove('blink'), 140); } pC = target; lastBeat = b; }
-  else pC += (pT - pC) * (1 - Math.exp(-dt * 5));
+  // reduced motion: follows the scroll almost directly (no long glide); otherwise a soft cinematic follow
+  pC += (pT - pC) * (1 - Math.exp(-dt * (reduced ? 14 : 5)));
   const p = pC;
   // beats + progress bar
   const b = beatOf(p); const want = (b === 5 && dockF > .5) ? -1 : b;
   if (want !== shownBeat) { beatEls.forEach((el, i) => el.classList.toggle('on', i === want)); shownBeat = want; }
-  $('#fill').style.width = (p * 100).toFixed(1) + '%';
+  setStyle(EL.fill, 'width', (p * 100).toFixed(1) + '%');
+  // simulator panel and viewport: the 3D view renders only in the space the panel does not use
+  const dockOn = p > .965; dock.classList.toggle('on', dockOn);
+  dockF += ((dockOn ? 1 : 0) - dockF) * (1 - Math.exp(-dt * (reduced ? 12 : 4)));
+  hideF += ((dockHidden ? 0 : 1) - hideF) * (1 - Math.exp(-dt * (reduced ? 12 : 7)));
+  const take = dockF * hideF, narrow = W <= 760;
+  VX = narrow ? 0 : Math.round(DOCK.w * take); VW = Math.max(1, W - VX);
+  VH = Math.max(1, narrow ? Math.round(H - DOCK.h * take) : H); VY = 0;
+  const VA = VW / VH;
+  if (VX !== lastVX || VH !== lastVH) { stage.style.setProperty('--vb', (H - VH) + 'px'); stage.style.setProperty('--vx', VX + 'px'); lastVX = VX; lastVH = VH; }
   // camera
   const u = camU(p); camPosC.getPoint(u, camP); camTgtC.getPoint(u, camT);
-  if (!still && p < .12) { const a = Math.sin(clock * .35) * .14 * (1 - p / .12); camP.x += Math.sin(a) * .38 - 0; camP.z += (1 - Math.cos(a)) * .38; }
-  const portrait = W / H < .85;
-  if (W / H < 1.2) { const zf = lerp(clamp(1.05 / (W / H), 1, 2.3), 1, sstep(.55, .8, p)); camP.sub(camT).multiplyScalar(zf).add(camT); }
+  if (!still && p < .12) { const a = Math.sin(clock * .35) * .14 * (1 - p / .12); camP.x += Math.sin(a) * .38; camP.z += (1 - Math.cos(a)) * .38; }
+  const portrait = VA < .85;
+  if (VA < 1.2) { const zf = lerp(clamp(1.05 / VA, 1, 2.3), 1, sstep(.55, .8, p)); camP.sub(camT).multiplyScalar(zf).add(camT); }
+  // visitor look-around in the simulator, always kept inside the room
+  const simOn = p > .97 && !camOverride;
+  if (!simOn) { LK.ty = 0; LK.tp = 0; LK.tz = 0; }
+  const lk = reduced ? 1 : 1 - Math.exp(-dt * 8); LK.y += (LK.ty - LK.y) * lk; LK.p += (LK.tp - LK.p) * lk; LK.z += (LK.tz - LK.z) * lk;
+  if (Math.abs(LK.y) + Math.abs(LK.p) + LK.z > 1e-4) {
+    sph.setFromVector3(tmpV2.copy(camP).sub(camT)); sph.theta += LK.y; sph.phi = clamp(sph.phi - LK.p, .9, 1.72); sph.radius *= 1 - LK.z;
+    camP.copy(camT).add(tmpV2.setFromSpherical(sph));
+    camP.set(clamp(camP.x, X0 + .35, X1 - .35), clamp(camP.y, 1.15, ROOM.h - .5), clamp(camP.z, Z0 + .35, Z1 - .3));
+  }
+  if (simOn !== lookOn) { lookOn = simOn; stage.classList.toggle('look', simOn); viewCtl.hidden = !simOn; if (simOn && !hintShown) { hintShown = true; lookHint.textContent = t(matchMedia('(pointer: coarse)').matches ? 'lookHintTouch' : 'lookHint'); lookHint.hidden = false; setTimeout(() => { lookHint.hidden = true; }, 6000); } }
   if (camOverride) { camP.set(...camOverride[0]); camT.set(...camOverride[1]); }
-  camera.position.copy(camP); camera.lookAt(camT); const simFov = portrait ? 74 : (W / H < 1.3 ? 62 : 56);
+  camera.position.copy(camP); camera.lookAt(camT); const simFov = portrait ? 74 : (VA < 1.3 ? 62 : 56);
   camera.fov = fovC.getPoint(u, tmpF).x + (simFov - 56) * sstep(.55, .92, p);
-  // dock + view offset so the room centres beside the dock / above the sheet
-  const dockOn = p > .965; hideF += ((dockHidden ? 0 : 1) - hideF) * (reduced ? 1 : 1 - Math.exp(-dt * 6)); const offF = (reduced ? dockF : sstep(.85, 1, p)) * hideF; showBtn.hidden = !(dockOn && dockHidden); dock.classList.toggle('on', dockOn);
-  dockF += ((dockOn ? 1 : 0) - dockF) * (reduced ? 1 : 1 - Math.exp(-dt * 4));
-  if (portrait || W < 760) { const sh = Math.min(H * .5, dock.offsetHeight || H * .45) * offF; camera.setViewOffset(W, H + sh, 0, sh, W, H); }
-  else { const dw = (dock.offsetWidth + 18) * offF; camera.setViewOffset(W + dw, H, 0, 0, W, H); }
-  camera.updateProjectionMatrix();
-  $('#prog').style.opacity = String(1 - dockF); $('#prog').style.pointerEvents = dockF > .5 ? 'none' : '';
+  camera.aspect = VA; camera.clearViewOffset(); camera.updateProjectionMatrix();
+  setStyle(EL.prog, 'opacity', (1 - dockF).toFixed(3)); setStyle(EL.prog, 'pointerEvents', dockF > .5 ? 'none' : '');
   // explode
   const e = sstep(.085, .17, p) * (1 - sstep(.44, .53, p));
   for (const pt of parts) { pt.o.position.z = pt.z + pt.dz * e; pt.o.position.x = (pt.o === woodMod ? .068 : pt.o === pFrame ? 0 : -.016) + pt.dx * Math.sin(Math.PI * Math.min(e, 1) * .5); }
@@ -1065,7 +1161,7 @@ function update(dt) {
   outLabels.forEach((L, i) => place(L, sstep(.68 + i * .012, .72 + i * .012, p) * (1 - sstep(.83, .87, p))));
   partLabels.forEach((L, i) => place(L, sstep(.1 + i * .015, .13 + i * .015, p) * (1 - sstep(.18, .21, p))));
   // hero-only lighting
-  const k = 1 - sstep(.55, .8, p); keyLight.intensity = 18 * k; $("#vig").style.opacity = (k * .7).toFixed(3); $('#shade').style.opacity = String(Math.max(k, 1 - dockF) * .9 + .1);
+  const k = 1 - sstep(.55, .8, p); keyLight.intensity = 18 * k; setStyle(EL.vig, 'opacity', (k * .7).toFixed(3)); setStyle(EL.shade, 'opacity', (Math.max(k, 1 - dockF) * .9 + .1).toFixed(3));
   // sim tweens
   for (const ch of CH) { const tt = tw[ch]; if (!tt) continue; const s = clamp((clock - tt.start) / tt.dur); if (clock < tt.start) continue; cur[ch] = lerp(tt.from, tt.to, s * s * (3 - 2 * s)); if (s >= 1) { cur[ch] = tt.to; delete tw[ch]; } }
   // time of day -> sun, sky, window
@@ -1094,7 +1190,8 @@ function update(dt) {
   M.walnut.emissive.setHex(0x7FA6EC); M.walnut.emissiveIntensity = 0;
   // ring on the panel / highlights
   const showRing = p > .97 && (!S.interacted || ['panel', 'core', 'intercom'].includes(hl));
-  if (showRing) { proj.copy(PANEL).project(camera); ring.style.transform = `translate(${(proj.x * .5 + .5) * W}px,${(-proj.y * .5 + .5) * H}px)`; ring.style.opacity = '1'; ring.classList.toggle('pulse', !still && !reduced); } else ring.style.opacity = '0';
+  const rx = VX + (proj.copy(PANEL).project(camera).x * .5 + .5) * VW, ry = VY + (-proj.y * .5 + .5) * VH;
+  if (showRing && proj.z < 1 && rx > VX + 20 && rx < VX + VW - 20 && ry < VY + VH - 20) { ring.style.transform = `translate(${rx}px,${ry}px)`; ring.style.opacity = '1'; ring.classList.toggle('pulse', !still && !reduced); } else ring.style.opacity = '0';
   // room temperature (rough demo simulation)
   if (p > .9) { const load = 2.2 * sunUp * block; const tgt = S.acOn ? S.set + load * .6 : 30; const r0 = S.room; S.room += (tgt - S.room) * (1 - Math.exp(-dt * .12));
     if (Math.abs(S.room - r0) > 0 && tick % 12 === 0) { updateReadout(); drawScreen(); } }
@@ -1103,13 +1200,38 @@ function update(dt) {
 }
 let camOverride = null;
 let dockF = 0, shownBeat = 0;
-let dockHidden = store.get('dsh-dock') === 'hidden', hideF = dockHidden ? 0 : 1; const showBtn = $('#dockShow');
-function setDock(h, focus = true) { dockHidden = h; dock.classList.toggle('hid', h); $('#dockHide').setAttribute('aria-expanded', String(!h)); showBtn.setAttribute('aria-expanded', String(!h)); store.set('dsh-dock', h ? 'hidden' : 'shown');
-  if (focus) { if (h) { showBtn.hidden = false; showBtn.focus(); } else $('#dockHide').focus(); } }
-$('#dockHide').addEventListener('click', () => setDock(true)); showBtn.addEventListener('click', () => setDock(false)); setDock(dockHidden, false); const beatEls = $$('.beat');
+let dockHidden = store.get('dsh-dock') === 'hidden', hideF = dockHidden ? 0 : 1; const tab = $('#dockTab');
+function setDock(h) { dockHidden = h; dock.classList.toggle('hid', h); tab.setAttribute('aria-expanded', String(!h)); tab.setAttribute('aria-label', t(h ? 'showCtl' : 'hideCtl')); tab.title = t(h ? 'showCtl' : 'hideCtl'); store.set('dsh-dock', h ? 'hidden' : 'shown'); }
+tab.addEventListener('click', () => setDock(!dockHidden)); setDock(dockHidden);
+let VX = 0, VY = 0, VW = 1, VH = 1, lastVX = -1, lastVH = -1, lookOn = false, hintShown = false;
+const LK = { y: 0, p: 0, z: 0, ty: 0, tp: 0, tz: 0 }, sph = new THREE.Spherical(), tmpV2 = new THREE.Vector3();
+const viewCtl = $('#viewCtl'), lookHint = $('#lookHint');
+const YAW = [-1.3, .7], PIT = [-.25, .45], ZM = [0, .55];
+function looked() { lookHint.hidden = true; S.interacted = true; }
+const ptrs = new Map(); let pinch0 = 0;
+canvas.addEventListener('pointerdown', e => { if (!lookOn) return; ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY, t: e.pointerType }); try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
+  if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinch0 = Math.hypot(a.x - b.x, a.y - b.y); } looked(); });
+canvas.addEventListener('pointermove', e => { const q = ptrs.get(e.pointerId); if (!q) return; const dx = e.clientX - q.x, dy = e.clientY - q.y; q.x = e.clientX; q.y = e.clientY;
+  if (ptrs.size === 1) { LK.ty = clamp(LK.ty - dx * .005, ...YAW); if (q.t !== 'touch') LK.tp = clamp(LK.tp + dy * .004, ...PIT); }
+  else if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y); if (pinch0) LK.tz = clamp(LK.tz + (d - pinch0) * .0025, ...ZM); pinch0 = d; } });
+const endPtr = e => { ptrs.delete(e.pointerId); pinch0 = 0; };
+canvas.addEventListener('pointerup', endPtr); canvas.addEventListener('pointercancel', endPtr);
+$$('.vbtns button').forEach(b => b.addEventListener('click', () => { looked(); const v = b.dataset.v;
+  if (v === 'left') LK.ty = clamp(LK.ty + .35, ...YAW); if (v === 'right') LK.ty = clamp(LK.ty - .35, ...YAW);
+  if (v === 'in') LK.tz = clamp(LK.tz + .15, ...ZM); if (v === 'out') LK.tz = clamp(LK.tz - .15, ...ZM);
+  if (v === 'reset') { LK.ty = 0; LK.tp = 0; LK.tz = 0; } })); const beatEls = $$('.beat');
+renderer.setClearColor(0x0B1F4B, 1);
+function render() { renderer.setScissorTest(false); renderer.setViewport(0, 0, W, H); renderer.clear();
+  const y = H - VY - VH; renderer.setViewport(VX, y, VW, VH); renderer.setScissor(VX, y, VW, VH); renderer.setScissorTest(true); renderer.render(scene, camera); }
 function frame(now) {
-  const dt = Math.min(.05, (now - last) / 1000); last = now;
-  if (visible && !document.hidden) { update(dt); renderer.render(scene, camera); }
+  const raw = now - last; const dt = Math.min(.05, raw / 1000); last = now;
+  // adaptive quality: if frames run slow, render slightly fewer pixels so motion stays fluid
+  if (visible && !document.hidden && raw < 250) { PERF.ema += (raw - PERF.ema) * .05; PERF.t += raw;
+    if (PERF.t > 1000) { PERF.t = 0; if (PERF.ema > 23) { PERF.slow++; PERF.fast = 0; } else if (PERF.ema < 15) { PERF.fast++; PERF.slow = 0; } else { PERF.slow = 0; PERF.fast = 0; }
+      if (PERF.slow >= 2 && PERF.qual > .6) { PERF.qual = Math.max(.6, PERF.qual * .82); PERF.slow = 0; resize(); }
+      else if (PERF.fast >= 4 && PERF.qual < 1) { PERF.qual = Math.min(1, PERF.qual * 1.12); PERF.fast = 0; resize(); } } }
+  if (visible && !document.hidden) { update(dt); render(); if (!LD.first) LD.first = true; }
+  if (LD.first && !LD.done && (LD.all || performance.now() - LD.start > 8000)) finishLoader();
   requestAnimationFrame(frame);
 }
 applyLang();
@@ -1117,8 +1239,7 @@ precompile();
 document.fonts?.ready?.then(() => drawScreen());
 requestAnimationFrame(frame);
 
-// test hooks for the prototype
-window.__dsh = { update: dt => update(dt), camPos: () => camera.position.toArray(), camTgt: () => camT.toArray(), fov: () => camera.fov, progs: () => renderer.info.programs.length, programs: () => renderer.info.programs.length, cam: (a, b) => { camOverride = a ? [a, b] : null; }, sw: () => document.documentElement.scrollWidth, setP: v => { pForce = v; pC = v; }, S, step: (n = 1) => { for (let i = 0; i < n; i++) { update(1 / 30); } renderer.render(scene, camera); }, scene: k => $(`.gt[data-scene="${k}"]`).click() };
 </script>
+
 </body>
 </html>
