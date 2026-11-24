@@ -94,6 +94,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .vbtns button:hover{background:rgba(255,255,255,.16)}
 .lookhint{font-size:.82rem;background:rgba(8,24,59,.7);border:1px solid var(--hair);border-radius:999px;padding:5px 12px;color:var(--travertine)}
 .stage.look #gl{cursor:grab}
+.reduced .vbtns [data-v="tour"],.still .vbtns [data-v="tour"]{display:none}
 .stage.look #gl:active{cursor:grabbing}
 #gl{touch-action:pan-y}
 /* loading */
@@ -222,6 +223,87 @@ footer .wrap{padding-block:0;display:grid;gap:6px}
 .nogl .noglnote{display:block}
 .nogl .beats{position:relative;inset:auto}
 .noglnote{display:none;width:min(640px,calc(100% - 40px));margin:0 auto 24px;color:var(--sand);font-size:.9rem}
+
+/* ===== the simulator menu IS the smart panel: graphite frame, dark glass screen, walnut strip (the strip is the hide handle) ===== */
+:root{--pnl-frame:#1B1C20;--pnl-screen:#111217;--pnl-screen-2:#181A20;--pnl-ink:#EDE6DA;--pnl-mute:#A59B88;--strip:28px}
+.dock{background:var(--pnl-frame);border-right:0;box-shadow:14px 0 40px rgba(0,0,0,.35)}
+.dock.on.hid{transform:translateX(calc(-100% + var(--strip)))}
+.dock-in{position:absolute;inset:calc(66px + env(safe-area-inset-top,0px)) calc(var(--strip) + 10px) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));height:auto;padding:16px 16px 0;border-radius:16px;gap:16px;color:var(--pnl-ink);
+  background:linear-gradient(118deg,rgba(255,255,255,.045) 0 24%,rgba(255,255,255,0) 24.3%),linear-gradient(180deg,var(--pnl-screen),var(--pnl-screen-2));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),inset 0 1px 0 rgba(255,255,255,.1)}
+.dtab{top:0;bottom:0;left:auto;right:0;transform:none;width:var(--strip);height:auto;border:0;border-radius:0;
+  background:#5B3F2C url("assets/tex/walnut_v.jpg") center/cover;box-shadow:inset 1px 0 0 rgba(0,0,0,.4),inset -1px 0 0 rgba(255,255,255,.08)}
+.dtab:hover{background-color:#5B3F2C;filter:brightness(1.1)}
+.dtab .knob{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#F4EEE4;background:rgba(0,0,0,.28);box-shadow:inset 0 1px 2px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.14)}
+.dtab .knob svg{width:15px;height:15px}
+.dock h2{font-family:var(--f-body);font-size:.82rem;font-weight:500;color:var(--pnl-mute)}
+.dock h3{color:var(--pnl-mute)}
+.pnl-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-top:4px}
+.pnl-clock b{display:block;font-family:var(--f-display);font-weight:300;font-size:3.1rem;line-height:1;direction:ltr;text-align:start;font-variant-numeric:tabular-nums}
+.pnl-clock span{display:block;font-size:.8rem;color:var(--pnl-mute);margin-top:8px}
+.pnl-ac{text-align:end;display:grid;gap:3px}
+.pnl-ac small{font-size:.75rem;color:var(--pnl-mute)}
+.pnl-ac b{font-weight:500;font-size:1.9rem;line-height:1;color:var(--lamp);direction:ltr;font-variant-numeric:tabular-nums}
+.pnl-ac b.off{color:#7D7568;font-size:1.25rem}
+.pnl-ac > span{font-size:.75rem;color:var(--pnl-mute)}
+#rIn{direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
+.pnl-note{display:flex;gap:8px;align-items:flex-start;margin-top:14px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.05);font-size:.86rem;color:#DCD2C1}
+.pnl-note svg{flex:none;margin-top:2px;color:var(--lamp)}
+.pnl-door{display:flex;gap:8px;align-items:center;margin-top:8px;padding:8px 12px;border-radius:999px;background:rgba(127,166,236,.18);color:#DCE7FB;font-size:.85rem}
+.pnl-door i{width:8px;height:8px;border-radius:50%;background:#3BD27A;flex:none}
+.dock .gt{background:rgba(255,255,255,.07);border:0;box-shadow:none;border-radius:16px;color:#E6DED1}
+.dock .gt:hover{background:rgba(255,255,255,.11)}
+.dock .gt[aria-pressed="true"]{background:rgba(240,180,106,.92);color:#1B1408}
+.dock .needs button{background:rgba(255,255,255,.05)}
+.ph-only{display:none}
+.dock .foot{position:sticky;bottom:0;margin:0 -16px;padding:12px 16px 14px;background:linear-gradient(180deg,rgba(24,26,32,0),var(--pnl-screen-2) 30%)}
+@media (max-width:760px){
+  :root{--strip:30px}
+  .dock{border-radius:20px 20px 0 0;border-top:0;box-shadow:0 -12px 40px rgba(0,0,0,.35)}
+  .dock.on.hid{transform:translateY(calc(100% - var(--strip)))}
+  .dock-in{inset:var(--strip) 0 0 0;border-radius:0;padding:14px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));gap:14px}
+  .dtab{left:0;right:0;top:0;bottom:auto;width:auto;height:var(--strip);border-radius:20px 20px 0 0;transform:none;background-image:url("assets/tex/walnut_diff.jpg");box-shadow:inset 0 -1px 0 rgba(0,0,0,.4)}
+  .pnl-clock b{font-size:2.4rem}
+  .pnl-ac b{font-size:1.5rem}
+  .pnl-note{margin-top:10px;font-size:.8rem;padding:8px 10px}
+  .dock{height:48svh}
+  .dock h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .pnl-top{margin-top:0}
+  .pnl-head:has(.pnl-door:not([hidden])) .pnl-note{display:none}
+  .dock-in:has(#tab-dv[aria-selected="true"]) .pnl-note,.dock-in:has(#tab-dv[aria-selected="true"]) .pnl-door{display:none}
+  .dock .foot .tiny,.dock .foot .link{display:none}
+  .ph-only{display:block}
+  .dock .foot{bottom:0;margin:0 calc(-1 * max(16px,env(safe-area-inset-right,0px)));padding:10px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px));gap:6px}
+}
+
+/* live device controls (panel style) */
+.ptabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:14px;background:rgba(255,255,255,.06)}
+.ptabs button{border:0;border-radius:10px;min-height:40px;padding:6px;background:transparent;color:var(--pnl-mute);font-weight:500;cursor:pointer}
+.ptabs button[aria-selected="true"]{background:rgba(255,255,255,.13);color:var(--pnl-ink)}
+.dv{display:grid;gap:10px}
+.dcard{background:rgba(255,255,255,.05);border-radius:16px;padding:12px;display:grid;gap:8px}
+.dcard.off{opacity:.55}
+.dhead{display:flex;align-items:center;gap:8px;color:var(--pnl-ink)}
+.dhead b{font-weight:500;font-size:.95rem}
+.dhead small{font-size:.75rem;color:var(--pnl-mute)}
+.dnote{display:none}
+.dcard.off .dnote{display:inline}
+.dhead .sw{margin-inline-start:auto}
+.dsl{display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 10px;font-size:.85rem;color:#DCD2C1}
+.dsl input{grid-column:1 / -1;width:100%;height:30px;margin:0;accent-color:var(--lamp)}
+.dsl output{font-variant-numeric:tabular-nums;color:var(--pnl-mute);font-size:.8rem;direction:ltr;unicode-bidi:isolate}
+.dsl.cct input{accent-color:#F6E3C3}
+.acrow{display:flex;align-items:center;justify-content:center;gap:16px}
+.acrow button{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.09);color:var(--pnl-ink);font-size:1.4rem;line-height:1;cursor:pointer}
+.acrow button:disabled{opacity:.4;cursor:default}
+.acrow b{font-size:1.9rem;font-weight:500;color:var(--lamp);min-width:3.4ch;text-align:center;direction:ltr;font-variant-numeric:tabular-nums}
+.acrow b.off{color:#7D7568}
+.sws{display:flex;gap:12px}
+.swb{width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,.15);cursor:pointer;padding:0}
+.swb[aria-pressed="true"]{border-color:var(--lamp);box-shadow:0 0 0 3px rgba(240,180,106,.25)}
+.swb[data-fin="walnut"]{background:#5B3F2C url("assets/tex/walnut_diff.jpg") center/cover}
+.swb[data-fin="silver"]{background:linear-gradient(135deg,#ECEEF0,#A3A8AD 60%,#D5D8DB)}
+.swb[data-fin="graphite"]{background:linear-gradient(135deg,#3A3A3F,#1F1F23)}
 </style>
 </head>
 <body>
@@ -257,22 +339,48 @@ footer .wrap{padding-block:0;display:grid;gap:6px}
 
     <aside class="dock" id="dock" aria-labelledby="simTitle">
       <div class="dock-in">
-      <div>
+      <div class="pnl-head">
         <h2 id="simTitle" data-t="simTitle">جهّز المجلس</h2>
-        <p class="story" data-t="simStory"></p>
-        <div class="readout">
-          <span><small data-t="clock">الوقت</small><b id="rTime">17:40</b></span>
-          <span><small data-t="outside">الخارج</small><b id="rOut">41°</b></span>
-          <span><small data-t="inside">داخل المجلس</small><b id="rIn">26.0°</b></span>
+        <div class="pnl-top">
+          <div class="pnl-clock"><b id="rTime">17:40</b><span id="pPray">المغرب 6:22 · الخارج 41°</span></div>
+          <div class="pnl-ac"><small data-t="scrAc">المكيف</small><b id="pAc">24°</b><span><span data-t="scrRoom">الغرفة</span> <span id="rIn">26.0°</span></span></div>
         </div>
+        <p class="pnl-note"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg><span data-t="simStory"></span></p>
+        <p class="pnl-door" id="pDoor" hidden><i></i><span data-t="scrDoor">كاميرا الباب جاهزة</span></p>
       </div>
-      <div>
-        <h3 data-t="scenesH">المشاهد</h3>
+      <div class="ptabs" role="tablist">
+        <button type="button" role="tab" id="tab-sc" aria-controls="pane-sc" aria-selected="true" data-t="tabScenes">المشاهد</button>
+        <button type="button" role="tab" id="tab-dv" aria-controls="pane-dv" aria-selected="false" tabindex="-1" data-t="tabDevices">الأجهزة</button>
+      </div>
+      <div id="pane-sc" role="tabpanel" aria-labelledby="tab-sc">
         <div class="scenes" role="group">
           <button class="gt" type="button" data-scene="guests" aria-pressed="false"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5M14.5 14.6c.8-.4 1.6-.6 2.5-.6 2.2 0 3.9 1.4 4.4 4"/></svg><span data-t="sGuests">ضيوف</span></button>
           <button class="gt" type="button" data-scene="dinner" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 15h16M5 15a7 7 0 0 1 14 0M12 6V4M3 19h18"/></svg><span data-t="sDinner">عشاء</span></button>
           <button class="gt" type="button" data-scene="reading" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M3 6.5C5.5 5 9 5 12 7c3-2 6.5-2 9-.5V19c-2.5-1.5-6-1.5-9 .5-3-2-6.5-2-9-.5z"/><path d="M12 7v12.5"/></svg><span data-t="sReading">قراءة</span></button>
           <button class="gt" type="button" data-scene="off" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 3v8M6.3 6.8a8 8 0 1 0 11.4 0"/></svg><span data-t="sOff">إطفاء الكل</span></button>
+        </div>
+      </div>
+      <div id="pane-dv" role="tabpanel" aria-labelledby="tab-dv" class="dv" hidden>
+        <div class="dcard" id="dc-lights">
+          <div class="dhead"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><b data-t="dvLights">الإنارة</b><small class="dnote" data-t="dvOffNote"></small></div>
+          <label class="dsl"><span data-t="dvCove"></span><output></output><input type="range" min="0" max="100" step="1" data-ch="cove"></label>
+          <label class="dsl"><span data-t="dvDown"></span><output></output><input type="range" min="0" max="100" step="1" data-ch="down"></label>
+          <label class="dsl"><span data-t="dvWash"></span><output></output><input type="range" min="0" max="100" step="1" data-ch="wash"></label>
+          <label class="dsl"><span data-t="dvLamp"></span><output></output><input type="range" min="0" max="100" step="1" data-ch="lamp"></label>
+          <label class="dsl cct"><span data-t="dvCct"></span><output id="cctOut">2700K</output><input type="range" min="2700" max="4000" step="100" value="2700" id="cct"></label>
+        </div>
+        <div class="dcard" id="dc-curtains">
+          <div class="dhead"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18M5 4v16M19 4v16M5 4c2 4 2 12 5 16M19 4c-2 4-2 12-5 16"/></svg><b data-t="dvCurt">الستائر</b><small class="dnote" data-t="dvOffNote"></small></div>
+          <label class="dsl"><span data-t="dvSheer"></span><output></output><input type="range" min="0" max="100" step="1" data-ch="sheer"></label>
+          <label class="dsl"><span data-t="dvBlack"></span><output></output><input type="range" min="0" max="100" step="1" data-ch="black"></label>
+        </div>
+        <div class="dcard" id="dc-ac">
+          <div class="dhead"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M4.9 6l14.2 12M19.1 6 4.9 18M9 4l3 2 3-2M9 20l3-2 3 2"/></svg><b data-t="dvAc">المكيف</b><small class="dnote" data-t="dvOffNote"></small><label class="sw mini"><span class="sr" data-t="dvAcOn"></span><input type="checkbox" id="acPower" checked></label></div>
+          <div class="acrow"><button type="button" id="acMinus" data-ta="acDown">−</button><b id="acSet">24°</b><button type="button" id="acPlus" data-ta="acUp">+</button></div>
+        </div>
+        <div class="dcard">
+          <div class="dhead"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M16 6v12"/></svg><b data-t="dvFinish">لمسة اللوحة</b><small id="finName"></small></div>
+          <div class="sws" role="group"><button type="button" class="swb" data-fin="walnut" data-ta="fWalnut" aria-pressed="true"></button><button type="button" class="swb" data-fin="silver" data-ta="fSilver" aria-pressed="false"></button><button type="button" class="swb" data-fin="graphite" data-ta="fGraphite" aria-pressed="false"></button></div>
         </div>
       </div>
       <div class="time">
@@ -299,6 +407,7 @@ footer .wrap{padding-block:0;display:grid;gap:6px}
         <ul class="needs" id="needs"></ul>
         <p class="empty" id="needsEmpty" data-t="needsEmpty"></p>
         <p class="without" id="without" hidden></p>
+        <p class="tiny ph-only" data-t="demoNote"></p>
       </div>
       <div class="foot">
         <button class="cta" id="cta" type="button" data-t="cta">احجز معاينة لهذه الغرفة</button>
@@ -306,11 +415,12 @@ footer .wrap{padding-block:0;display:grid;gap:6px}
         <button class="link" id="replay" type="button" data-t="replay">شاهد المقدمة مرة أخرى</button>
       </div>
       </div>
-      <button class="dtab" id="dockTab" type="button" aria-controls="dock" aria-expanded="true" aria-label="إخفاء"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button class="dtab" id="dockTab" type="button" aria-controls="dock" aria-expanded="true" aria-label="إخفاء"><span class="knob"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></span></button>
     </aside>
     <div class="viewctl" id="viewCtl" hidden>
       <p class="lookhint" id="lookHint" hidden data-t="lookHint">اسحب لتتجوّل بنظرك داخل المجلس</p>
       <div class="vbtns" role="group">
+        <button type="button" data-v="tour" data-ta="vTour"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="9" ry="4"/><path d="M17 15.6l2.6 1.1-1 2.7"/><path d="M12 3v3"/></svg></button>
         <button type="button" data-v="left" data-ta="vLeft"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7l-5 5 5 5"/><path d="M4 12h11a5 5 0 0 1 5 5"/></svg></button>
         <button type="button" data-v="right" data-ta="vRight"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7l5 5-5 5"/><path d="M20 12H9a5 5 0 0 0-5 5"/></svg></button>
         <button type="button" data-v="out" data-ta="vOut"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg></button>
@@ -450,7 +560,7 @@ b6h:'جرّبها بنفسك',b6p:'الضيوف قادمون بعد المغرب
 pGlass:'زجاج اللمس',pDisplay:'الشاشة',pFrame:'الإطار بلمسة الجوز',pBox:'علبة التثبيت في الجدار',
 mPower:'وحدة التغذية',mSwitch:'وحدة التشغيل',mDim:'وحدة التعتيم',mServer:'خادم الجوال',
 oLights:'الإنارة',oCurtains:'الستائر',oAc:'المكيف',oPhone:'تطبيق الجوال',panelMarker:'اللوحة',
-simTitle:'جهّز المجلس',hideCtl:'إخفاء لوحة التحكم',showCtl:'إظهار لوحة التحكم',lookHint:'اسحب لتتجوّل بنظرك داخل المجلس',lookHintTouch:'اسحب يمينًا ويسارًا للتجوّل، وقرّب بإصبعين',vLeft:'لفّ لليسار',vRight:'لفّ لليمين',vIn:'تقريب',vOut:'إبعاد',vReset:'إعادة المنظر',ldPill:'جارٍ تحميل تفاصيل الغرفة…',simStory:'الضيوف قادمون بعد المغرب. اضغط «ضيوف» وشاهد ما يحدث.',clock:'الوقت',outside:'الخارج',inside:'الداخل (محاكاة)',
+simTitle:'جهّز المجلس',tabScenes:'المشاهد',tabDevices:'الأجهزة',dvLights:'الإنارة',dvCove:'الإضاءة المخفية',dvDown:'السبوتات',dvWash:'إضاءة الجدار',dvLamp:'الأباجورة',dvCct:'لون الإضاءة',dvCurt:'الستائر',dvSheer:'الستارة الخفيفة',dvBlack:'الستارة المعتمة',dvClosed:'مغلقة',dvAc:'المكيف',dvAcOn:'تشغيل المكيف',dvFinish:'لمسة اللوحة',fWalnut:'جوز',fSilver:'فضي',fGraphite:'جرافيت',dvOffNote:'غير مضمّن في نظامك',sCustom:'مخصص',wSettings:'الإعدادات',acDown:'خفض الحرارة',acUp:'رفع الحرارة',hideCtl:'إخفاء لوحة التحكم',showCtl:'إظهار لوحة التحكم',lookHint:'اسحب للدوران 360° داخل المجلس',lookHintTouch:'اسحب يمينًا ويسارًا للدوران 360°، وقرّب بإصبعين',vTour:'جولة 360° داخل المجلس',vLeft:'دوران لليسار',vRight:'دوران لليمين',vIn:'تقريب',vOut:'إبعاد',vReset:'إعادة المنظر',ldPill:'جارٍ تحميل تفاصيل الغرفة…',simStory:'الضيوف قادمون بعد المغرب. اضغط «ضيوف» وشاهد ما يحدث.',clock:'الوقت',outside:'الخارج',inside:'الداخل (محاكاة)',
 scenesH:'المشاهد',sGuests:'ضيوف',sDinner:'عشاء',sReading:'قراءة',sOff:'إطفاء الكل',
 timeH:'وقت اليوم',tAsr:'العصر 4:30',tMaghrib:'المغرب 6:22',tIsha:'العشاء 7:52',tNight:'9:00',
 devH:'ضمن نظامي',dLights:'التحكم بالإنارة',dCurtains:'محركات الستائر',dAc:'التحكم بالمكيف',dIntercom:'الإنتركم المرئي',
@@ -477,7 +587,7 @@ b6h:'Now try it yourself',b6p:'Guests arrive after Maghrib. Get the majlis ready
 pGlass:'Touch glass',pDisplay:'Display',pFrame:'Frame, walnut finish',pBox:'Box inside the wall',
 mPower:'Power supply',mSwitch:'Switching',mDim:'Dimming',mServer:'Phone server',
 oLights:'Lights',oCurtains:'Curtains',oAc:'AC',oPhone:'Phone app',panelMarker:'The panel',
-simTitle:'Get the majlis ready',hideCtl:'Hide controls',showCtl:'Show controls',lookHint:'Drag to look around the majlis',lookHintTouch:'Swipe sideways to look around, pinch to zoom',vLeft:'Turn left',vRight:'Turn right',vIn:'Zoom in',vOut:'Zoom out',vReset:'Reset view',ldPill:'Loading room details…',simStory:'Guests arrive after Maghrib. Tap “Guests” and watch the room.',clock:'Time',outside:'Outside',inside:'Inside (simulated)',
+simTitle:'Get the majlis ready',tabScenes:'Scenes',tabDevices:'Devices',dvLights:'Lighting',dvCove:'Hidden cove light',dvDown:'Downlights',dvWash:'Wall light',dvLamp:'Floor lamp',dvCct:'Light colour',dvCurt:'Curtains',dvSheer:'Sheer curtain',dvBlack:'Blackout curtain',dvClosed:'closed',dvAc:'AC',dvAcOn:'AC power',dvFinish:'Panel finish',fWalnut:'Walnut',fSilver:'Silver',fGraphite:'Graphite',dvOffNote:'Not in your system',sCustom:'Custom',wSettings:'Settings',acDown:'Lower temperature',acUp:'Raise temperature',hideCtl:'Hide controls',showCtl:'Show controls',lookHint:'Drag to turn 360° inside the majlis',lookHintTouch:'Swipe sideways to turn 360°, pinch to zoom',vTour:'360° tour of the majlis',vLeft:'Turn left',vRight:'Turn right',vIn:'Zoom in',vOut:'Zoom out',vReset:'Reset view',ldPill:'Loading room details…',simStory:'Guests arrive after Maghrib. Tap “Guests” and watch the room.',clock:'Time',outside:'Outside',inside:'Inside (simulated)',
 scenesH:'Scenes',sGuests:'Guests',sDinner:'Dinner',sReading:'Reading',sOff:'All off',
 timeH:'Time of day',tAsr:'Asr 4:30',tMaghrib:'Maghrib 6:22',tIsha:'Isha 7:52',tNight:'9:00',
 devH:'Include in my system',dLights:'Lighting control',dCurtains:'Curtain motors',dAc:'AC control',dIntercom:'Video intercom',
@@ -495,7 +605,7 @@ fName:'Name',fPhone:'Mobile number',fCity:'City',cityR:'Riyadh',cityJ:'Jeddah',c
 fDone:'Saved in this prototype only. Nothing was sent. On the live site this goes to your sales team.',fErrName:'Enter your name.',fErrPhone:'Enter a Saudi mobile number starting with 05 or 9665.',
 sumRoom:'Family majlis',sumScene:'Scene',sumDevices:'Devices',noGl:'This device can’t show the 3D view, so here is the story as text.'}
 };
-const SCENE_NAME = { guests:'sGuests', dinner:'sDinner', reading:'sReading', off:'sOff' };
+const SCENE_NAME = { guests:'sGuests', dinner:'sDinner', reading:'sReading', off:'sOff', custom:'sCustom' };
 
 /* ---------------- helpers ---------------- */
 const $ = (s, r = document) => r.querySelector(s);
@@ -789,6 +899,23 @@ const pg = new THREE.Group(); pg.position.set(-3.3, 0, 2.2); scene.add(pg); {
   const R = rng(21); for (let i = 0; i < 22; i++) { const l = shadowy(new THREE.Mesh(new THREE.SphereGeometry(.5, 10, 6), M.leaf)); const a = R() * Math.PI * 2, h = .55 + R() * .75;
     l.scale.set(.07, .012, .26); l.position.set(Math.cos(a) * .18, h, Math.sin(a) * .18); l.rotation.set(R() * .6 - .3, -a, -.5 - R() * .5); pg.add(l); } }
 
+// framed Najdi mud-brick relief on the front wall, so every direction of the 360° view has something to see
+const artTex = canvasTex(1024, 640, (g, w, h) => {
+  const R = rng(31); g.fillStyle = '#D8C7AA'; g.fillRect(0, 0, w, h); speckle(g, w, h, 6000, ['#CDBA9A', '#E2D3BA', '#C9B594'], .6, 2.4, .35, R);
+  const base = h * .78; const towers = [[90, 170, 170], [270, 120, 230], [400, 150, 150], [560, 110, 300], [680, 170, 190], [860, 120, 140]];
+  for (const [x, wd, ht] of towers) { const y = base - ht;
+    g.fillStyle = 'rgba(90,70,45,.35)'; g.fillRect(x + 10, y + 10, wd, ht);           // cast shadow (relief depth)
+    g.fillStyle = '#E4D5BC'; g.fillRect(x, y, wd, ht);
+    g.fillStyle = '#CDBB9C'; g.fillRect(x + wd - 12, y, 12, ht);                       // shaded side
+    g.fillStyle = '#E9DCC6'; for (let c = 0; c < wd; c += 22) { g.beginPath(); g.moveTo(x + c, y); g.lineTo(x + c + 11, y - 16); g.lineTo(x + c + 22, y); g.fill(); } // crenellation
+    g.fillStyle = 'rgba(80,60,40,.55)';
+    for (let r = y + 30; r < base - 30; r += 46) for (let c = x + 18; c < x + wd - 24; c += 34) { g.beginPath(); g.moveTo(c, r + 18); g.lineTo(c + 8, r); g.lineTo(c + 16, r + 18); g.fill(); } }
+  g.fillStyle = 'rgba(120,95,65,.25)'; g.fillRect(0, base, w, 6);
+});
+const artG = new THREE.Group(); artG.position.set(-0.45, 1.62, Z1 - .03); artG.rotation.y = Math.PI; scene.add(artG);
+box(1.78, 1.14, .04, M.walnutDark, 0, 0, -.005, artG).castShadow = false;
+{ const pnl = new THREE.Mesh(new THREE.PlaneGeometry(1.7, 1.06), new THREE.MeshStandardMaterial({ map: artTex, roughness: .95 })); pnl.position.z = .017; pnl.receiveShadow = true; artG.add(pnl); }
+
 /* ---------------- outside: courtyard, palms, sky ---------------- */
 const sand = shadowy(new THREE.Mesh(new THREE.PlaneGeometry(40, 60), M.sand), false, true); sand.rotation.x = -Math.PI / 2; sand.position.set(-24, -.02, 0); scene.add(sand);
 box(.4, 3.4, 40, M.outerWall, -15, 1.7, 0);
@@ -880,7 +1007,7 @@ function pbr(mats, name, rep, { rot = 0, nScale = 1 } = {}) {
     tx.wrapS = tx.wrapT = THREE.RepeatWrapping; tx.repeat.set(rep[0], rep[1]); if (rot) { tx.center.set(.5, .5); tx.rotation = rot; }
     if (srgb) tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = renderer.capabilities.getMaxAnisotropy(); renderer.initTexture(tx); res(tx); }, undefined, () => res(null)));
   Promise.all([load('diff', true), load('nor', false), load('rough', false)]).then(([d, n, r]) => {
-    for (const mat of mats) { if (d) { mat.map = d; mat.color.set(0xffffff); } if (n) { mat.normalMap = n; mat.normalScale.set(nScale, nScale); } if (r) mat.roughnessMap = r; mat.needsUpdate = true; } precompile(); });
+    for (const mat of mats) { if (d) { mat.map = d; mat.color.set(0xffffff); } if (n) { mat.normalMap = n; mat.normalScale.set(nScale, nScale); } if (r) mat.roughnessMap = r; mat.needsUpdate = true; } if (mats.includes(woodMod.material) && S.finish !== 'walnut') applyFinish(S.finish, true); precompile(); });
 }
 pbr([M.floor], 'floor', [ROOM.w / 1.5, ROOM.d / 1.5], { nScale: .8 });
 pbr([M.plaster, M.backSkin, M.ceiling], 'plaster', [2, 1], { nScale: .5 });
@@ -1012,11 +1139,15 @@ function drawScreen() {
     rr(g, x, 420, tw_, 210, 28); g.fillStyle = on ? 'rgba(240,180,106,.9)' : 'rgba(255,255,255,.07)'; g.fill();
     g.fillStyle = on ? '#1B1408' : '#E6DED1'; g.font = '500 38px "IBM Plex Sans Arabic", sans-serif'; g.textAlign = 'center'; g.fillText(t(SCENE_NAME[k]), x + tw_ / 2, 540); });
   scr.tex.needsUpdate = true;
+  updateReadout();
 }
 
 /* ---------------- UI ---------------- */
 const dock = $('#dock'), ring = $('#ring'), live = $('#live');
-function updateReadout() { $('#rTime').textContent = fmt(S.time); $('#rOut').textContent = outsideTemp(S.time) + '°'; $('#rIn').textContent = S.room.toFixed(1) + '°'; }
+function updateReadout() { $('#rTime').textContent = fmt(S.time); $('#rIn').textContent = S.room.toFixed(1) + '°';
+  $('#pPray').textContent = `${t(prayerKey(S.time))} · ${t('outside')} ${outsideTemp(S.time)}°`;
+  const ac = $('#pAc'); ac.textContent = S.acOn ? `${S.set}°` : t('scrOff'); ac.classList.toggle('off', !S.acOn);
+  $('#pDoor').hidden = !S.intercom; }
 const NEEDS = [ ['panel', 'nPanel', 'nPanelD'], ['core', 'nCore', 'nCoreD'], ['lights', 'nDim', 'nDimD'], ['curtains', 'nCurt', 'nCurtD'], ['ac', 'nAc', 'nAcD'], ['intercom', 'nInt', 'nIntD'] ];
 function updateNeeds() {
   const ul = $('#needs'); ul.textContent = ''; const sc = S.scene; $('#needsEmpty').hidden = !!sc;
@@ -1065,8 +1196,8 @@ const WA_NUM = '966502095291';
 function devList() { return ['lights', 'curtains', 'ac', 'intercom'].filter(d => S.dev[d]).map(d => t({ lights: 'dLights', curtains: 'dCurtains', ac: 'dAc', intercom: 'dIntercom' }[d])).join(lang === 'ar' ? '، ' : ', '); }
 function waText() { const name = $('#f-name').value.trim(); const city = $('#f-city').selectedOptions[0].textContent; const sc = S.scene ? t(SCENE_NAME[S.scene]) : t('scrNoScene');
   return lang === 'ar'
-    ? `السلام عليكم، أرغب بحجز معاينة.\nالاسم: ${name}\nالمدينة: ${city}\nالغرفة: ${t('sumRoom')}\nالمشهد الذي جربته: ${sc}\nالأجهزة: ${devList()}\n(من موقع المهارات الرقمية)`
-    : `Hello, I'd like to book a site survey.\nName: ${name}\nCity: ${city}\nRoom: ${t('sumRoom')}\nScene I tried: ${sc}\nDevices: ${devList()}\n(From the Digital Skills Hub website)`; }
+    ? `السلام عليكم، أرغب بحجز معاينة.\nالاسم: ${name}\nالمدينة: ${city}\nالغرفة: ${t('sumRoom')}\nالمشهد الذي جربته: ${sc}\nالأجهزة: ${devList()}${settingsLine()}\n(من موقع المهارات الرقمية)`
+    : `Hello, I'd like to book a site survey.\nName: ${name}\nCity: ${city}\nRoom: ${t('sumRoom')}\nScene I tried: ${sc}\nDevices: ${devList()}${settingsLine()}\n(From the Digital Skills Hub website)`; }
 function updWa() { $('#wa').href = `https://wa.me/${WA_NUM}?text=${encodeURIComponent(waText())}`; }
 $('#cta').addEventListener('click', () => {
   lastFocus = document.activeElement;
@@ -1084,6 +1215,55 @@ modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 form.addEventListener('submit', e => { e.preventDefault(); $('#wa').click(); });
 $('#copy').addEventListener('click', e => { const txt = $('#phone').textContent; const done = () => { e.target.textContent = t('copied'); setTimeout(() => e.target.textContent = t('copy'), 1600); };
   try { navigator.clipboard.writeText(txt).then(done, () => { getSelection().selectAllChildren($('#phone')); }); } catch (_) { getSelection().selectAllChildren($('#phone')); } });
+
+/* ---------------- live device controls ---------------- */
+S.cct = 2700; S.finish = 'walnut';
+const paneDv = $('#pane-dv'), DVS = $$('#pane-dv input[data-ch]'), ptabs = $$('.ptabs [role="tab"]');
+function selTab(id) { ptabs.forEach(b => { const on = b.id === id; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; $('#' + b.getAttribute('aria-controls')).hidden = !on; }); if (id === 'tab-dv') syncDevices(true); }
+ptabs.forEach((b, i) => { b.addEventListener('click', () => selTab(b.id));
+  b.addEventListener('keydown', e => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { const n = ptabs[(i + 1) % ptabs.length]; n.focus(); selTab(n.id); } }); });
+function goCustom() { S.interacted = true; if (S.scene !== 'custom') { S.scene = 'custom'; $$('.gt[data-scene]').forEach(x => x.setAttribute('aria-pressed', 'false')); updateNeeds(); drawScreen(); } }
+function outFor(inp) { const v = +inp.value; inp.previousElementSibling.textContent = (inp.dataset.ch === 'sheer' || inp.dataset.ch === 'black') ? `${v}% ${t('dvClosed')}` : `${v}%`; }
+DVS.forEach(inp => inp.addEventListener('input', () => { const ch = inp.dataset.ch; delete tw[ch]; cur[ch] = +inp.value / 100; outFor(inp); goCustom(); }));
+function kelvin(k) { const tt = k / 100; const r = tt <= 66 ? 255 : 329.698727446 * Math.pow(tt - 60, -0.1332047592);
+  const g = tt <= 66 ? 99.4708025861 * Math.log(tt) - 161.1195681661 : 288.1221695283 * Math.pow(tt - 60, -0.0755148492);
+  const b = tt >= 66 ? 255 : (tt <= 19 ? 0 : 138.5177312231 * Math.log(tt - 10) - 305.0447927307);
+  return new THREE.Color().setRGB(clamp(r / 255), clamp(g / 255), clamp(b / 255), THREE.SRGBColorSpace); }
+function applyCct() { const c = kelvin(S.cct); [...coveLights, ...downSpots, ...washSpots, lampLight, entryLight].forEach(l => l.color.copy(c));
+  M.cove.emissive.copy(c); M.downl.emissive.copy(c).lerp(new THREE.Color(0xffffff), .2); M.shadeMat.emissive.copy(c); $('#cctOut').textContent = S.cct + 'K'; }
+$('#cct').addEventListener('input', e => { S.cct = +e.target.value; applyCct(); goCustom(); });
+applyCct();
+function setAc(on, set) { if (!S.dev.ac) return; S.acOn = on; S.set = clamp(set, 18, 28); goCustom(); drawScreen(); syncDevices(true); }
+$('#acMinus').addEventListener('click', () => setAc(true, S.set - 1));
+$('#acPlus').addEventListener('click', () => setAc(true, S.set + 1));
+$('#acPower').addEventListener('change', e => setAc(e.target.checked, S.set));
+const woodMat = woodMod.material;
+function applyFinish(f, silent) { const m = woodMat;
+  if (S.finish === 'walnut' && f !== 'walnut') m.userData.saved = { map: m.map, normalMap: m.normalMap, roughnessMap: m.roughnessMap, color: m.color.getHex() };
+  if (f === 'walnut') { const sv = m.userData.saved; if (sv) { m.map = sv.map; m.normalMap = sv.normalMap; m.roughnessMap = sv.roughnessMap; m.color.setHex(sv.color); } m.metalness = 0; m.roughness = .5; m.envMap = null; }
+  else { m.map = null; m.roughnessMap = null; m.envMap = envTex;
+    if (f === 'silver') { m.color.setHex(0xC9CCD0); m.metalness = .9; m.roughness = .32; m.envMapIntensity = 1; }
+    else { m.color.setHex(0x2A2A2E); m.metalness = .35; m.roughness = .42; m.envMapIntensity = .6; } }
+  m.needsUpdate = true; S.finish = f;
+  $$('.swb').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.fin === f))); $('#finName').textContent = t({ walnut: 'fWalnut', silver: 'fSilver', graphite: 'fGraphite' }[f]);
+  if (!silent) S.interacted = true; }
+$$('.swb').forEach(b => b.addEventListener('click', () => applyFinish(b.dataset.fin)));
+function syncDevices(force) { if (!force && paneDv.hidden) return;
+  DVS.forEach(inp => { if (document.activeElement !== inp || force) { const v = Math.round(cur[inp.dataset.ch] * 100); if (+inp.value !== v) inp.value = v; outFor(inp); } });
+  const lightsOn = S.dev.lights, curtOn = S.dev.curtains, acIn = S.dev.ac;
+  $('#dc-lights').classList.toggle('off', !lightsOn); $$('#dc-lights input').forEach(i => { i.disabled = !lightsOn; });
+  $('#dc-curtains').classList.toggle('off', !curtOn); $$('#dc-curtains input').forEach(i => { i.disabled = !curtOn; });
+  $('#dc-ac').classList.toggle('off', !acIn); $('#acPower').disabled = !acIn; $('#acMinus').disabled = !acIn || !S.acOn; $('#acPlus').disabled = !acIn || !S.acOn;
+  $('#acPower').checked = S.acOn; const a = $('#acSet'); a.textContent = S.acOn ? `${S.set}°` : t('scrOff'); a.classList.toggle('off', !S.acOn);
+  $('#finName').textContent = t({ walnut: 'fWalnut', silver: 'fSilver', graphite: 'fGraphite' }[S.finish]); }
+function settingsLine() { const pc = v => Math.round(v * 100) + '%'; const ar = lang === 'ar'; const sep = ar ? '، ' : ', ';
+  const parts = [];
+  if (S.dev.lights) parts.push(`${t('dvCove')} ${pc(cur.cove)}`, `${t('dvDown')} ${pc(cur.down)}`, `${t('dvWash')} ${pc(cur.wash)}`, `${t('dvLamp')} ${pc(cur.lamp)}`, `${t('dvCct')} ${S.cct}K`);
+  if (S.dev.curtains) parts.push(`${t('dvSheer')} ${pc(cur.sheer)} ${t('dvClosed')}`, `${t('dvBlack')} ${pc(cur.black)} ${t('dvClosed')}`);
+  if (S.dev.ac) parts.push(`${t('dvAc')} ${S.acOn ? S.set + '°' : t('scrOff')}`);
+  parts.push(`${t('dvFinish')}: ${t({ walnut: 'fWalnut', silver: 'fSilver', graphite: 'fGraphite' }[S.finish])}`);
+  return `\n${t('wSettings')}: ${parts.join(sep)}`; }
+syncDevices(true);
 
 /* ---------------- resize ---------------- */
 let W = 1, H = 1; const DOCK = { w: 0, h: 0 };
@@ -1118,8 +1298,9 @@ function update(dt) {
   dockF += ((dockOn ? 1 : 0) - dockF) * (1 - Math.exp(-dt * (reduced ? 12 : 4)));
   hideF += ((dockHidden ? 0 : 1) - hideF) * (1 - Math.exp(-dt * (reduced ? 12 : 7)));
   const take = dockF * hideF, narrow = W <= 760;
-  VX = narrow ? 0 : Math.round(DOCK.w * take); VW = Math.max(1, W - VX);
-  VH = Math.max(1, narrow ? Math.round(H - DOCK.h * take) : H); VY = 0;
+  const strip = (narrow ? 30 : 28) * dockF * (1 - hideF); // the walnut strip stays visible when the panel is hidden
+  VX = narrow ? 0 : Math.round(DOCK.w * take + strip); VW = Math.max(1, W - VX);
+  VH = Math.max(1, narrow ? Math.round(H - DOCK.h * take - strip) : H); VY = 0;
   const VA = VW / VH;
   if (VX !== lastVX || VH !== lastVH) { stage.style.setProperty('--vb', (H - VH) + 'px'); stage.style.setProperty('--vx', VX + 'px'); lastVX = VX; lastVH = VH; }
   // camera
@@ -1127,14 +1308,19 @@ function update(dt) {
   if (!still && p < .12) { const a = Math.sin(clock * .35) * .14 * (1 - p / .12); camP.x += Math.sin(a) * .38; camP.z += (1 - Math.cos(a)) * .38; }
   const portrait = VA < .85;
   if (VA < 1.2) { const zf = lerp(clamp(1.05 / VA, 1, 2.3), 1, sstep(.55, .8, p)); camP.sub(camT).multiplyScalar(zf).add(camT); }
-  // visitor look-around in the simulator, always kept inside the room
+  // 360° view inside the room: the camera glides in along its line of sight, then orbits the seating area.
+  // The orbit radius keeps it inside the room and the position is clamped to the walls, ceiling and floor.
   const simOn = p > .97 && !camOverride;
-  if (!simOn) { LK.ty = 0; LK.tp = 0; LK.tz = 0; }
-  const lk = reduced ? 1 : 1 - Math.exp(-dt * 8); LK.y += (LK.ty - LK.y) * lk; LK.p += (LK.tp - LK.p) * lk; LK.z += (LK.tz - LK.z) * lk;
-  if (Math.abs(LK.y) + Math.abs(LK.p) + LK.z > 1e-4) {
-    sph.setFromVector3(tmpV2.copy(camP).sub(camT)); sph.theta += LK.y; sph.phi = clamp(sph.phi - LK.p, .9, 1.72); sph.radius *= 1 - LK.z;
-    camP.copy(camT).add(tmpV2.setFromSpherical(sph));
-    camP.set(clamp(camP.x, X0 + .35, X1 - .35), clamp(camP.y, 1.15, ROOM.h - .5), clamp(camP.z, Z0 + .35, Z1 - .3));
+  if (!simOn) { LK.ty = 0; LK.tp = 0; LK.tz = 0; LK.tm = 0; LK.tour = 0; }
+  if (LK.tour > 0) { if (still || reduced) LK.tour = 0; else { const st = Math.min(LK.tour, dt * Math.PI * 2 / 18); LK.ty += st; LK.tour -= st; } }
+  const lk = reduced ? 1 : 1 - Math.exp(-dt * 7), lm = reduced ? 1 : 1 - Math.exp(-dt * 2.6);
+  LK.y += (LK.ty - LK.y) * lk; LK.p += (LK.tp - LK.p) * lk; LK.z += (LK.tz - LK.z) * lk; LK.m += (LK.tm - LK.m) * lm;
+  if (LK.m > 1e-3) {
+    const th0 = Math.atan2(camP.x - ORB_C.x, camP.z - ORB_C.z);
+    sph.set(clamp(ORB_R * (1 - LK.z), 1.3, 3.2), clamp(1.45 - LK.p, .95, 1.75), th0 + LK.y);
+    tmpV2.setFromSpherical(sph).add(ORB_C);
+    tmpV2.set(clamp(tmpV2.x, X0 + .35, X1 - .35), clamp(tmpV2.y, 1.15, ROOM.h - .45), clamp(tmpV2.z, Z0 + .35, Z1 - .3));
+    camP.lerp(tmpV2, LK.m); camT.lerp(ORB_C, LK.m);
   }
   if (simOn !== lookOn) { lookOn = simOn; stage.classList.toggle('look', simOn); viewCtl.hidden = !simOn; if (simOn && !hintShown) { hintShown = true; lookHint.textContent = t(matchMedia('(pointer: coarse)').matches ? 'lookHintTouch' : 'lookHint'); lookHint.hidden = false; setTimeout(() => { lookHint.hidden = true; }, 6000); } }
   if (camOverride) { camP.set(...camOverride[0]); camT.set(...camOverride[1]); }
@@ -1195,6 +1381,7 @@ function update(dt) {
   // room temperature (rough demo simulation)
   if (p > .9) { const load = 2.2 * sunUp * block; const tgt = S.acOn ? S.set + load * .6 : 30; const r0 = S.room; S.room += (tgt - S.room) * (1 - Math.exp(-dt * .12));
     if (Math.abs(S.room - r0) > 0 && tick % 12 === 0) { updateReadout(); drawScreen(); } }
+  if (tick % 5 === 0) syncDevices();
   // smoke
   smoke.visible = !still && !reduced; if (smoke.visible && tick % 2 === 0) { const a = smokeGeo.attributes.position; for (let i = 0; i < smokePts; i++) { const y = i * .022; a.setXYZ(i, Math.sin(y * 9 - clock * 1.6) * .012 * (i / smokePts) * 3, y, Math.cos(y * 7 - clock * 1.2) * .01 * (i / smokePts) * 3); } a.needsUpdate = true; }
 }
@@ -1204,22 +1391,25 @@ let dockHidden = store.get('dsh-dock') === 'hidden', hideF = dockHidden ? 0 : 1;
 function setDock(h) { dockHidden = h; dock.classList.toggle('hid', h); tab.setAttribute('aria-expanded', String(!h)); tab.setAttribute('aria-label', t(h ? 'showCtl' : 'hideCtl')); tab.title = t(h ? 'showCtl' : 'hideCtl'); store.set('dsh-dock', h ? 'hidden' : 'shown'); }
 tab.addEventListener('click', () => setDock(!dockHidden)); setDock(dockHidden);
 let VX = 0, VY = 0, VW = 1, VH = 1, lastVX = -1, lastVH = -1, lookOn = false, hintShown = false;
-const LK = { y: 0, p: 0, z: 0, ty: 0, tp: 0, tz: 0 }, sph = new THREE.Spherical(), tmpV2 = new THREE.Vector3();
+const LK = { y: 0, p: 0, z: 0, m: 0, ty: 0, tp: 0, tz: 0, tm: 0, tour: 0 }, sph = new THREE.Spherical(), tmpV2 = new THREE.Vector3();
+const ORB_C = new THREE.Vector3(-0.45, 1.0, -0.45), ORB_R = 2.3; // centre of the seating area
 const viewCtl = $('#viewCtl'), lookHint = $('#lookHint');
-const YAW = [-1.3, .7], PIT = [-.25, .45], ZM = [0, .55];
-function looked() { lookHint.hidden = true; S.interacted = true; }
+const PIT = [-.3, .45], ZM = [-.4, .45];
+function looked() { lookHint.hidden = true; S.interacted = true; LK.tm = 1; }
 const ptrs = new Map(); let pinch0 = 0;
 canvas.addEventListener('pointerdown', e => { if (!lookOn) return; ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY, t: e.pointerType }); try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
-  if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinch0 = Math.hypot(a.x - b.x, a.y - b.y); } looked(); });
+  if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinch0 = Math.hypot(a.x - b.x, a.y - b.y); } LK.tour = 0; looked(); });
 canvas.addEventListener('pointermove', e => { const q = ptrs.get(e.pointerId); if (!q) return; const dx = e.clientX - q.x, dy = e.clientY - q.y; q.x = e.clientX; q.y = e.clientY;
-  if (ptrs.size === 1) { LK.ty = clamp(LK.ty - dx * .005, ...YAW); if (q.t !== 'touch') LK.tp = clamp(LK.tp + dy * .004, ...PIT); }
+  if (ptrs.size === 1) { LK.ty -= dx * .006; if (q.t !== 'touch') LK.tp = clamp(LK.tp + dy * .004, ...PIT); }
   else if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y); if (pinch0) LK.tz = clamp(LK.tz + (d - pinch0) * .0025, ...ZM); pinch0 = d; } });
 const endPtr = e => { ptrs.delete(e.pointerId); pinch0 = 0; };
 canvas.addEventListener('pointerup', endPtr); canvas.addEventListener('pointercancel', endPtr);
 $$('.vbtns button').forEach(b => b.addEventListener('click', () => { looked(); const v = b.dataset.v;
-  if (v === 'left') LK.ty = clamp(LK.ty + .35, ...YAW); if (v === 'right') LK.ty = clamp(LK.ty - .35, ...YAW);
+  if (v !== 'tour') LK.tour = 0;
+  if (v === 'left') LK.ty += Math.PI / 4; if (v === 'right') LK.ty -= Math.PI / 4;
+  if (v === 'tour') { LK.tour = Math.PI * 2; }
   if (v === 'in') LK.tz = clamp(LK.tz + .15, ...ZM); if (v === 'out') LK.tz = clamp(LK.tz - .15, ...ZM);
-  if (v === 'reset') { LK.ty = 0; LK.tp = 0; LK.tz = 0; } })); const beatEls = $$('.beat');
+  if (v === 'reset') { LK.ty = Math.round(LK.ty / (Math.PI * 2)) * Math.PI * 2; LK.tp = 0; LK.tz = 0; LK.tm = 0; LK.tour = 0; } })); const beatEls = $$('.beat');
 renderer.setClearColor(0x0B1F4B, 1);
 function render() { renderer.setScissorTest(false); renderer.setViewport(0, 0, W, H); renderer.clear();
   const y = H - VY - VH; renderer.setViewport(VX, y, VW, VH); renderer.setScissor(VX, y, VW, VH); renderer.setScissorTest(true); renderer.render(scene, camera); }
